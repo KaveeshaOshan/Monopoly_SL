@@ -15,4 +15,17 @@ typedef enum{
 
 } Square_Types;
 
+typedef enum {
+
+    Group_Brown,
+    Group_Light_Blue,
+    Group_Pink,
+    Group_Orange,
+    Group_Red,
+    Group_Yellow,
+    Group_Green,
+    Group_Dark_Blue
+
+} PropertyGroup;
+
 #endif
