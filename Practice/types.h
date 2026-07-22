@@ -28,4 +28,13 @@ typedef enum {
 
 } PropertyGroup;
 
+typedef enum{
+
+    INSURANCE_NONE,
+    INSURANCE_BASIC,
+    INSURANCE_COMPREHENSIVE,
+    INSURANCE_BUSINESS
+
+} InsuranceType;
+
 #endif
