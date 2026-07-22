@@ -37,4 +37,31 @@ typedef enum{
 
 } InsuranceType;
 
+typedef struct{
+
+    PropertyGroup group;
+    char name[50];
+
+    short purchase_price;
+    short mortgage_value;
+    short house_price;
+    short hotel_price;
+    short house_rent;
+
+    short ownerID;
+    short mortgage_status;
+    short isLoanLocked;
+
+    short houses_count;
+    short hotel_count;
+    short conditionofproperty;
+
+    InsuranceType insurance;
+    int insuranceExpireRounds;
+
+    short age;
+    int depreciationPercentage;
+
+} Property;
+
 #endif
