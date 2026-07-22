@@ -64,4 +64,14 @@ typedef struct{
 
 } Property;
 
+typedef struct{
+
+    short index;
+    char name[50];
+    Square_Types Types;
+
+    Property PropertyData;
+
+} Square;
+
 #endif
