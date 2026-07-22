@@ -13,10 +13,11 @@ typedef enum{
     Square_Insurance,
     Square_Bank
 
-} Square_Types;
+} SquareTypes;
 
 typedef enum {
 
+    Group_None,
     Group_Brown,
     Group_Light_Blue,
     Group_Pink,
@@ -68,7 +69,7 @@ typedef struct{
 
     short index;
     char name[50];
-    Square_Types Types;
+    SquareTypes Types;
 
     Property PropertyData;
 
