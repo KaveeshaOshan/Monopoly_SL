@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "Types.h"
+#include "types.h"
 
 Square gameboard[40];
 
@@ -46,126 +46,49 @@ void Add_Data_Normal_Square(short SquareIndex, const char* nameofSquare, SquareT
 
 }
 
-void initializing_Board(){
-    //Square 0 init...
-    Add_Data_Normal_Square(0,"GO",Square_Start);
-
-    //Square 1 init...
-    InitializePropertySquare(1,"Pettah",Square_Property, Group_Brown,2500,1250,250,2000,3000);
-
-    //Square 2 init...
-    Add_Data_Normal_Square(2, "Community Development Fund", Square_Event);
-
-    //Square 3 init...
-    InitializePropertySquare(3, "Maradana", Square_Property, Group_Brown, 2500, 1250, 250, 2000, 3000);
-
-    //Square 4 init...
-    Add_Data_Normal_Square(4, "Income Tax", Square_Tax);
-
-    //Square 5 init... (Railway - Dynamic rent, no buildings)
-    InitializePropertySquare(5, "Colombo Fort Railway Station", Square_Railway, Group_None, 8000, 4000, 0, 0, 0);
-
-    //Square 6 init...
-    InitializePropertySquare(6, "Bambalapitiya", Square_Property, Group_Light_Blue, 3500, 1750, 350, 2250, 4000);
-
-    //Square 7 init...
-    Add_Data_Normal_Square(7, "National Event Card", Square_Event);
-
-    //Square 8 init...
-    InitializePropertySquare(8, "Wellawatte", Square_Property, Group_Light_Blue, 3500, 1750, 350, 2250, 4000);
-
-    //Square 9 init...
-    InitializePropertySquare(9, "Mount Lavinia", Square_Property, Group_Light_Blue, 3500, 1750, 350, 2250, 4000);
-
-    //Square 10 init...
-    Add_Data_Normal_Square(10, "Jail/Just Visiting", Square_Special);
-
-    //Square 11 init...
-    InitializePropertySquare(11, "Nugegoda", Square_Property, Group_Pink, 4500, 2250, 450, 2500, 5000);
-
-    //Square 12 init... (Utility - Dynamic rent, no buildings)
-    InitializePropertySquare(12, "Ceylon Electricity Board", Square_Utility, Group_None, 3000, 1500, 0, 0, 0);
-
-    //Square 13 init...
-    InitializePropertySquare(13, "Maharagama", Square_Property, Group_Pink, 4500, 2250, 450, 2500, 5000);
-
-    //Square 14 init...
-    InitializePropertySquare(14, "Kottawa", Square_Property, Group_Pink, 4500, 2250, 450, 2500, 5000);
-
-    //Square 15 init...
-    InitializePropertySquare(15, "Kandy Railway Station", Square_Railway, Group_None, 8000, 4000, 0, 0, 0);
-
-    //Square 16 init...
-    InitializePropertySquare(16, "Negombo", Square_Property, Group_Orange, 5500, 2750, 550, 2750, 6000);
-
-    //Square 17 init...
-    Add_Data_Normal_Square(17, "Sri Lanka Insurance", Square_Insurance);
-
-    //Square 18 init...
-    InitializePropertySquare(18, "Katunayake", Square_Property, Group_Orange, 5500, 2750, 550, 2750, 6000);
-
-    //Square 19 init...
-    InitializePropertySquare(19, "Ja-Ela", Square_Property, Group_Orange, 5500, 2750, 550, 2750, 6000);
-
-    //Square 20 init...
-    Add_Data_Normal_Square(20, "Free Parking", Square_Special);
-
-    //Square 21 init...
-    InitializePropertySquare(21, "Kandy City", Square_Property, Group_Red, 6500, 3250, 650, 3000, 8000);
-
-    //Square 22 init...
-    Add_Data_Normal_Square(22, "National Event Card", Square_Event);
-
-    //Square 23 init...
-    InitializePropertySquare(23, "Peradeniya", Square_Property, Group_Red, 6500, 3250, 650, 3000, 8000);
-
-    //Square 24 init...
-    InitializePropertySquare(24, "Katugastota", Square_Property, Group_Red, 6500, 3250, 650, 3000, 8000);
-
-    //Square 25 init...
-    InitializePropertySquare(25, "Galle Railway Station", Square_Railway, Group_None, 8000, 4000, 0, 0, 0);
-
-    //Square 26 init...
-    InitializePropertySquare(26, "Galle Fort", Square_Property, Group_Yellow, 8000, 4000, 800, 4000, 10000);
-
-    //Square 27 init...
-    InitializePropertySquare(27, "Unawatuna", Square_Property, Group_Yellow, 8000, 4000, 800, 4000, 10000);
-
-    //Square 28 init...
-    InitializePropertySquare(28, "Water Supply and Drainage Board", Square_Utility, Group_None, 3000, 1500, 0, 0, 0);
-
-    //Square 29 init...
-    InitializePropertySquare(29, "Hikkaduwa", Square_Property, Group_Yellow, 8000, 4000, 800, 4000, 10000);
-
-    //Square 30 init...
-    Add_Data_Normal_Square(30, "Go To Jail", Square_Special);
-
-    //Square 31 init...
-    InitializePropertySquare(31, "Jaffna Town", Square_Property, Group_Green, 10000, 5000, 1000, 5000, 12000);
-
-    //Square 32 init...
-    InitializePropertySquare(32, "Nallur", Square_Property, Group_Green, 10000, 5000, 1000, 5000, 12000);
-
-    //Square 33 init...
-    Add_Data_Normal_Square(33, "Ceylinco Insurance", Square_Insurance);
-
-    //Square 34 init...
-    InitializePropertySquare(34, "Trincomalee", Square_Property, Group_Green, 10000, 5000, 1000, 5000, 12000);
-
-    //Square 35 init...
-    InitializePropertySquare(35, "Jaffna Railway Station", Square_Railway, Group_None, 8000, 4000, 0, 0, 0);
-
-    //Square 36 init...
-    Add_Data_Normal_Square(36, "National Event Card", Square_Event);
-
-    //Square 37 init...
-    InitializePropertySquare(37, "Nuwara Eliya", Square_Property, Group_Dark_Blue, 12000, 6000, 1200, 6000, 15000);
-
-    //Square 38 init...
-    Add_Data_Normal_Square(38, "Bank of Ceylon", Square_Bank);
-
-    //Square 39 init...
-    InitializePropertySquare(39, "Galle Face", Square_Property, Group_Dark_Blue, 12000, 6000, 1200, 6000, 15000);
+void initialize_board() {
     
-    
+    Add_Data_Normal_Square(  0, "GO",                           Square_Start);
+    InitializePropertySquare(1, "Pettah",                       Square_Property, Group_Brown,      2500, 1250,  250, 2000, 3000);
+    Add_Data_Normal_Square(  2, "Community Development Fund",   Square_Event);
+    InitializePropertySquare(3, "Maradana",                     Square_Property, Group_Brown,      2500, 1250,  250, 2000, 3000);
+    Add_Data_Normal_Square(  4, "Income Tax",                   Square_Tax);
+    InitializePropertySquare(5, "Colombo Fort Railway Station", Square_Railway,  Group_None,       8000, 4000,    0,    0,    0);
+    InitializePropertySquare(6, "Bambalapitiya",                Square_Property, Group_Light_Blue, 3500, 1750,  350, 2250, 4000);
+    Add_Data_Normal_Square(  7, "National Event Card",          Square_Event);
+    InitializePropertySquare(8, "Wellawatte",                   Square_Property, Group_Light_Blue, 3500, 1750,  350, 2250, 4000);
+    InitializePropertySquare(9, "Mount Lavinia",                Square_Property, Group_Light_Blue, 3500, 1750,  350, 2250, 4000);
+
+    Add_Data_Normal_Square( 10, "Jail / Just Visiting",         Square_Special);
+    InitializePropertySquare(11, "Nugegoda",                    Square_Property, Group_Pink,       4500, 2250,  450, 2500, 5000);
+    InitializePropertySquare(12, "Ceylon Electricity Board",    Square_Utility,  Group_None,       3000, 1500,    0,    0,    0);
+    InitializePropertySquare(13, "Maharagama",                  Square_Property, Group_Pink,       4500, 2250,  450, 2500, 5000);
+    InitializePropertySquare(14, "Kottawa",                     Square_Property, Group_Pink,       4500, 2250,  450, 2500, 5000);
+    InitializePropertySquare(15, "Kandy Railway Station",       Square_Railway,  Group_None,       8000, 4000,    0,    0,    0);
+    InitializePropertySquare(16, "Negombo",                     Square_Property, Group_Orange,     5500, 2750,  550, 2750, 6000);
+    Add_Data_Normal_Square( 17, "Sri Lanka Insurance",          Square_Insurance);
+    InitializePropertySquare(18, "Katunayake",                  Square_Property, Group_Orange,     5500, 2750,  550, 2750, 6000);
+    InitializePropertySquare(19, "Ja-Ela",                      Square_Property, Group_Orange,     5500, 2750,  550, 2750, 6000);
+
+    Add_Data_Normal_Square( 20, "Free Parking",                 Square_Special);
+    InitializePropertySquare(21, "Kandy City",                  Square_Property, Group_Red,        6500, 3250,  650, 3000, 8000);
+    Add_Data_Normal_Square( 22, "National Event Card",          Square_Event);
+    InitializePropertySquare(23, "Peradeniya",                  Square_Property, Group_Red,        6500, 3250,  650, 3000, 8000);
+    InitializePropertySquare(24, "Katugastota",                 Square_Property, Group_Red,        6500, 3250,  650, 3000, 8000);
+    InitializePropertySquare(25, "Galle Railway Station",       Square_Railway,  Group_None,       8000, 4000,    0,    0,    0);
+    InitializePropertySquare(26, "Galle Fort",                  Square_Property, Group_Yellow,     8000, 4000,  800, 4000,10000);
+    InitializePropertySquare(27, "Unawatuna",                   Square_Property, Group_Yellow,     8000, 4000,  800, 4000,10000);
+    InitializePropertySquare(28, "Water Board",                 Square_Utility,  Group_None,       3000, 1500,    0,    0,    0);
+    InitializePropertySquare(29, "Hikkaduwa",                   Square_Property, Group_Yellow,     8000, 4000,  800, 4000,10000);
+
+    Add_Data_Normal_Square( 30, "Go To Jail",                   Square_Special);
+    InitializePropertySquare(31, "Jaffna Town",                 Square_Property, Group_Green,     10000, 5000, 1000, 5000,12000);
+    InitializePropertySquare(32, "Nallur",                      Square_Property, Group_Green,     10000, 5000, 1000, 5000,12000);
+    Add_Data_Normal_Square( 33, "Ceylinco Insurance",           Square_Insurance);
+    InitializePropertySquare(34, "Trincomalee",                 Square_Property, Group_Green,     10000, 5000, 1000, 5000,12000);
+    InitializePropertySquare(35, "Jaffna Railway Station",      Square_Railway,  Group_None,       8000, 4000,    0,    0,    0);
+    Add_Data_Normal_Square( 36, "National Event Card",          Square_Event);
+    InitializePropertySquare(37, "Nuwara Eliya",                Square_Property, Group_Dark_Blue, 12000, 6000, 1200, 6000,15000);
+    Add_Data_Normal_Square( 38, "Bank of Ceylon",               Square_Bank);
+    InitializePropertySquare(39, "Galle Face",                  Square_Property, Group_Dark_Blue, 12000, 6000, 1200, 6000,15000);
 }
