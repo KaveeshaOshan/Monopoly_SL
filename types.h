@@ -41,13 +41,13 @@ typedef enum{
 typedef struct{
 
     PropertyGroup group;
-    char name[50];
+    char name[50]; // Name of property "Pettah, Kandy City, Galle Fort etc."
 
-    short purchase_price;
-    short mortgage_value;
-    short house_price;
-    short hotel_price;
-    short house_rent;
+    int property_purchase_price;
+    int mortgage_value;
+    int house_price;
+    int hotel_price;
+    int base_rent;
 
     short ownerID;
     short mortgage_status;
@@ -74,5 +74,36 @@ typedef struct{
     Property PropertyData;
 
 } Square;
+
+typedef struct{
+
+    //player identification
+    char name[50];
+    char strategy_type[50];
+    short ID;
+
+    //player money and net worth
+    short cash_balance;
+    short isBankrupt;
+    int networth;
+
+    //player position and locations
+    short current_position;
+    short jail_status;
+    short turns_remaining_Injail;
+
+    //players property ownerships
+    short railwayOwned;
+    short UtilitiesOwned;
+    short totalPropertiesOwned;
+
+    //player loans and stuff
+    short hasLoan;
+    short LoanPrincipal;
+    short accruedInterest;
+    short LoanInterestRate;
+    short loanRoundRemaining;
+
+} player;
 
 #endif
