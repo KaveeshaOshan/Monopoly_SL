@@ -1,6 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "types.h"
+
+void gameState(){
+
+    int currentRounds = 0;
+    int maxRounds = 500;
+    int GameState;
+    int Winner;
+    int NumberOfPlayers = 4;
+    int NumberOfSolventPlayers = 4;
+    int CurrentPlayer;
+    int CurrentInflation = 0;
+    int CurrentMarketBoom;
+    int CurrentEchonomicEvent;
+    int CurrentReginolEvent;
+    int CurrentGovermentRegulation;
+
+}
 
 typedef struct{
 
@@ -25,3 +43,32 @@ DiceOperations get_random_dice_values(){
 
 }
 
+void movePlayer(player *p, int dice)
+{
+    p->current_position += dice;
+
+    if(p->current_position >= 40)
+    {
+        p->current_position -= 40;
+        p->cash_balance += 2000;
+    }
+}
+
+void playerTurn(){
+
+    DiceOperations dice_value_A = get_random_dice_values();
+    DiceOperations dice_value_C = get_random_dice_values();
+    DiceOperations dice_value_R = get_random_dice_values();
+    DiceOperations dice_value_O = get_random_dice_values();
+
+    if
+
+}
+
+int main(){
+    
+    srand(time(NULL));
+    
+    playerTurn();
+
+}

@@ -29,7 +29,7 @@ void initializeSinglePlayer(player *p, short id, const char *name, StrategyType 
 
     p->loan.active = 0;
     p->loan.principal = 0;
-    p->loan.interest = 0;
+    p->loan.interestRate = 0;
     p->loan.interestRate = 0;
     p->loan.roundsRemaining = 0;
 }
