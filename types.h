@@ -45,7 +45,7 @@ typedef enum{
 typedef enum{
 
     OWNER_BANK = -1,
-    OWNER_AGGRESSIVE_INVESTOR = 0,
+    OWNER_AGGRESSIVE_INVESTOR,
     OWNER_CONSERVATIVE_BANKER,
     OWNER_RISK_TAKER,
     OWNER_OPPORTUNISTIC_TRADER
@@ -198,7 +198,6 @@ typedef struct
 typedef struct{
 
     //player identification
-    char name[50];
     StrategyType strategy;
     short ID;
 
