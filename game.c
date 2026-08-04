@@ -3,7 +3,7 @@
 #include <time.h>
 #include "types.h"
 
-void gameState(){
+/**typedef struct {
 
     int currentRounds = 0;
     int maxRounds = 500;
@@ -18,7 +18,7 @@ void gameState(){
     int CurrentReginolEvent;
     int CurrentGovermentRegulation;
 
-}
+} GameState;**/
 
 typedef struct{
 
@@ -26,7 +26,36 @@ typedef struct{
     int dice2;
     int sum_of_dice;
 
-}DiceOperations;
+} DiceOperations;
+
+typedef struct
+{
+    int playerID;
+    int diceTotal;
+
+} TurnResult;
+
+const char *getPlayerName(int PlayerID)
+{
+    switch (PlayerID)
+    {
+        case OWNER_AGGRESSIVE_INVESTOR:
+            return "Aggressive Investor";
+
+        case OWNER_CONSERVATIVE_BANKER:
+
+            return "Conservative Banker";
+
+        case OWNER_RISK_TAKER:
+            return "Risk Taker";
+
+        case OWNER_OPPORTUNISTIC_TRADER:
+            return "Opportunistic Trader";
+
+        default:
+            return "Unknown Player";
+    }
+}
 
 DiceOperations get_random_dice_values(){
 
@@ -43,7 +72,110 @@ DiceOperations get_random_dice_values(){
 
 }
 
-void movePlayer(player *p, int dice)
+void sortTurnResults(TurnResult results[], int start, int end)
+{
+    for (int i = start; i < end - 1; i++)
+    {
+        for (int j = start; j < end - 1; j++)
+        {
+            if (results[j].diceTotal < results[j + 1].diceTotal)
+            {
+                TurnResult temporary = results[j];
+                results[j] = results[j + 1];
+                results[j + 1] = temporary;
+            }
+        }
+    }
+}
+
+void rankPlayerGroup(TurnResult results[], int start, int end)
+{
+    /* Every player in this group rolls */
+    for (int i = start; i < end; i++)
+    {
+        DiceOperations dice = get_random_dice_values();
+
+        results[i].diceTotal = dice.sum_of_dice;
+
+        printf(
+            "%s rolled %d and %d. Total = %d\n",
+            getPlayerName(results[i].playerID),
+            dice.dice1,
+            dice.dice2,
+            dice.sum_of_dice
+        );
+    }
+
+    /* Arrange this group from highest to lowest */
+    sortTurnResults(results, start, end);
+
+    /* Search for equal totals */
+    int groupStart = start;
+
+    while (groupStart < end)
+    {
+        int groupEnd = groupStart + 1;
+
+        while (groupEnd < end && results[groupEnd].diceTotal == results[groupStart].diceTotal)
+        {
+            groupEnd++;
+        }
+
+        int tiedPlayers = groupEnd - groupStart;
+
+        if (tiedPlayers > 1)
+        {
+            printf("\n%d players are tied with %d.\n", tiedPlayers, results[groupStart].diceTotal);
+
+            printf("Only these tied players reroll.\n\n");
+
+            rankPlayerGroup(results, groupStart, groupEnd);
+        }
+
+        groupStart = groupEnd;
+    }
+}
+
+void determineTurnOrder(int turnOrder[4])
+{
+    TurnResult results[4];
+
+    /* Connect each position to one player */
+    for (int i = 0; i < 4; i++)
+    {
+        results[i].playerID = i;
+        results[i].diceTotal = 0;
+    }
+
+    printf("Determining Player Turn Order\n");
+    printf("=============================\n");
+
+    /*
+     * All four players roll first.
+     * Ties are handled inside this function.
+     */
+    rankPlayerGroup(results, 0, 4);
+
+    /* Save the final player IDs */
+    for (int i = 0; i < 4; i++)
+    {
+        turnOrder[i] = results[i].playerID;
+    }
+
+    printf("\nFinal Turn Order\n");
+    printf("================\n");
+
+    for (int i = 0; i < 4; i++)
+    {
+        printf(
+            "%d. %s\n",
+            i + 1,
+            getPlayerName(turnOrder[i])
+        );
+    }
+}
+
+void movePlayer(Player *p, int dice)
 {
     p->current_position += dice;
 
@@ -54,21 +186,13 @@ void movePlayer(player *p, int dice)
     }
 }
 
-void playerTurn(){
+int main(void)
+{
+    int turnOrder[4];
 
-    DiceOperations dice_value_A = get_random_dice_values();
-    DiceOperations dice_value_C = get_random_dice_values();
-    DiceOperations dice_value_R = get_random_dice_values();
-    DiceOperations dice_value_O = get_random_dice_values();
+    srand((unsigned int)time(NULL));
 
-    if
+    determineTurnOrder(turnOrder);
 
-}
-
-int main(){
-    
-    srand(time(NULL));
-    
-    playerTurn();
-
+    return 0;
 }

@@ -187,7 +187,6 @@ typedef struct
     int loanAmount;
     int loanOutstanding;
     int startround;
-    int principal;
     int interestRate;
     int roundsRemaining;
     
@@ -198,6 +197,7 @@ typedef struct
 typedef struct{
 
     //player identification
+    char name[50];
     StrategyType strategy;
     short ID;
 
@@ -216,7 +216,7 @@ typedef struct{
     short UtilitiesOwned;
     short totalPropertiesOwned;
 
-    bool ownedProperties[40];
+    bool ownedAssets[40];
 
     //player loans and stuff    
     Loan loan;
