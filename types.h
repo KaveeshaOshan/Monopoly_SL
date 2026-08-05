@@ -60,8 +60,7 @@ typedef enum{
 
 } AssetType;
 
-typedef enum
-{
+typedef enum{
     CARD_TOURISM_HYPE,
     CARD_FUEL_SHORTAGE,
     CARD_HEAVY_FLOODS,
@@ -128,8 +127,7 @@ typedef struct{
 
 } Property;
 
-typedef struct
-{
+typedef struct{
     SquareTypes Types;
     int purchase_price;
     int mortgage_value;
@@ -142,8 +140,7 @@ typedef struct
 
 } Railway;
 
-typedef struct
-{
+typedef struct{
     SquareTypes Types;
     int purchase_price;
     int mortgage_value;
@@ -174,16 +171,14 @@ typedef struct{
 
 } Square;
 
-typedef enum
-{
+typedef enum{
     STRATEGY_AGGRESSIVE,
     STRATEGY_CONSERVATIVE,
     STRATEGY_RISK_TAKER,
     STRATEGY_OPPORTUNISTIC
 } StrategyType;
 
-typedef struct
-{
+typedef struct{
     int loanAmount;
     int loanOutstanding;
     int startround;
