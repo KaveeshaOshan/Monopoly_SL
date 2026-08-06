@@ -1,7 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+#include "players.h"
 #include "types.h"
+#include "game.h"
+#include "events.h"
+#include "board.h"
+
+Player player[NUM_PLAYERS];
+Square gameboard[NUM_SQUARES];
+EventCard cards[NUM_EVENTS];
+int turnOrder[NUM_PLAYERS];
+EventDeck deck; 
+
+
 
 /**typedef struct {
 
@@ -28,15 +41,15 @@ typedef struct{
 
 } DiceOperations;
 
-typedef struct
-{
+typedef struct{
+
     int playerID;
     int diceTotal;
 
 } TurnResult;
 
-const char *getPlayerName(int PlayerID)
-{
+const char *getPlayerName(int PlayerID){
+
     switch (PlayerID)
     {
         case OWNER_AGGRESSIVE_INVESTOR:
@@ -72,8 +85,8 @@ DiceOperations get_random_dice_values(){
 
 }
 
-void sortTurnResults(TurnResult results[], int start, int end)
-{
+void sortTurnResults(TurnResult results[], int start, int end){
+
     for (int i = start; i < end - 1; i++)
     {
         for (int j = start; j < end - 1; j++)
@@ -88,8 +101,8 @@ void sortTurnResults(TurnResult results[], int start, int end)
     }
 }
 
-void rankPlayerGroup(TurnResult results[], int start, int end)
-{
+void rankPlayerGroup(TurnResult results[], int start, int end){
+
     /* Every player in this group rolls */
     for (int i = start; i < end; i++)
     {
@@ -136,8 +149,8 @@ void rankPlayerGroup(TurnResult results[], int start, int end)
     }
 }
 
-void determineTurnOrder(int turnOrder[4])
-{
+void determineTurnOrder(int turnOrder[4]){
+
     TurnResult results[4];
 
     /* Connect each position to one player */
@@ -175,8 +188,8 @@ void determineTurnOrder(int turnOrder[4])
     }
 }
 
-void movePlayer(Player *p, int dice)
-{
+void movePlayer(Player *p, int dice){
+
     p->current_position += dice;
 
     if(p->current_position >= 40)
@@ -186,13 +199,16 @@ void movePlayer(Player *p, int dice)
     }
 }
 
-int main(void)
-{
-    int turnOrder[4];
+void startgame(){
 
-    srand((unsigned int)time(NULL));
+    initializePlayers(player);
+
+    initialize_board(gameboard);
 
     determineTurnOrder(turnOrder);
 
-    return 0;
+    initializeEventCards(cards);
+
+    shuffleEventDeck(&deck);
+
 }

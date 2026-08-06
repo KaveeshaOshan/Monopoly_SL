@@ -2,6 +2,12 @@
 #define TYPES_H_
 
 #include <stdbool.h>
+#define NUM_PLAYERS 4
+#define NUM_SQUARES 40
+#define NUM_EVENTS 20
+#define NUM_RAILWAYS 4
+#define NUM_UTILITIES 2
+#define NUM_PROPERTIES 22
 
 typedef enum{
 
@@ -239,7 +245,6 @@ typedef union{
     Property property;
     Railway railway;
     Utility utility;
-
 } SquareData;
 
 typedef struct{
