@@ -8,6 +8,7 @@
 #define NUM_RAILWAYS 4
 #define NUM_UTILITIES 2
 #define NUM_PROPERTIES 22
+#define MAX_ROUNDS 50
 
 typedef enum{
 
@@ -291,6 +292,7 @@ typedef struct{
     short current_position;
     bool in_jail;
     short turns_remaining_Injail;
+    int passed_go;
 
     //players property ownerships
     short railwayOwned;

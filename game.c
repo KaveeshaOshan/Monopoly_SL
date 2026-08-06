@@ -199,6 +199,53 @@ void movePlayer(Player *p, int dice){
     }
 }
 
+void player_move(struct Player *player){
+
+    DiceOperations dice_value = get_random_dice_values();
+
+    int is_double = (dice_value.dice1 == dice_value.dice2);
+
+    if(player->in_jail)
+    {
+        if(player->turns_remaining_Injail==0)
+        {
+            player->in_jail = false;
+            printf("%s left Jail after 3 turns.\n\n", getPlayerName(player->ID));
+        }
+
+        else if(is_double)
+        {
+            player->in_jail = false;
+            player->turns_remaining_Injail = 0;
+            printf("%s rolled doubles and left Jail.\n\n", getPlayerName(player->ID));
+        }
+        else if (player->cash_balance >= 300) {
+            player->in_jail = false;
+            player->turns_remaining_Injail = 0;
+            printf("%s paid bail of LKR 300.\n\n", getPlayerName(player->ID));
+        }
+        else {
+            player->turns_remaining_Injail--;
+            printf("%s remains in jail and must skip the turn.\n", getPlayerName(player->ID));
+        }
+    }
+
+    int current_position = player->current_position;
+    int new_position = (player->current_position + dice) % 40;
+    printf("%s rolled %d.\n", getPlayerName(player->ID), dice);
+    printf("%s moved from Square %d to square %d.\n", getPlayerName(player->ID), player->current_position, new_position);
+
+    if (current_position + dice >= 40) {
+        player->passed_go++;
+        player->cash_balance += 2000;
+        printf("%s passed GO\n", getPlayerName(player->ID));
+        printf("Collected LKR 2000.\n");
+        printf("Current Balance : LKR %d.\n", player->cash_balance);
+    }
+    player->current_position = new_position;
+
+}
+
 void startgame(){
 
     initializePlayers(player);
@@ -210,5 +257,6 @@ void startgame(){
     initializeEventCards(cards);
 
     shuffleEventDeck(&deck);
+
 
 }
