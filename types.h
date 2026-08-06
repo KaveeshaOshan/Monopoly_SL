@@ -61,6 +61,7 @@ typedef enum{
 } AssetType;
 
 typedef enum{
+
     CARD_TOURISM_HYPE,
     CARD_FUEL_SHORTAGE,
     CARD_HEAVY_FLOODS,
@@ -85,6 +86,86 @@ typedef enum{
     CARD_COUNT
 
 } EventCardType;
+
+typedef enum
+{
+    EVENT_EFFECT_CASH_CHANGE,
+    EVENT_EFFECT_RENT_CHANGE,
+    EVENT_EFFECT_ASSET_VALUE_CHANGE,
+    EVENT_EFFECT_CONSTRUCTION_COST_CHANGE,
+    EVENT_EFFECT_INTEREST_RATE_CHANGE,
+    EVENT_EFFECT_INSURANCE_PREMIUM_CHANGE,
+    EVENT_EFFECT_PROPERTY_DAMAGE,
+    EVENT_EFFECT_PROPERTY_CLOSURE,
+    EVENT_EFFECT_CONSTRUCTION_SUSPENSION
+
+} EventEffectType;
+
+typedef enum{
+
+    TARGET_DRAWING_PLAYER_HOTELS,
+    TARGET_DRAWING_PLAYER_RAILWAYS,
+    TARGET_RANDOM_COASTAL_PROPERTY,
+    TARGET_RANDOM_PROPERTY,
+    TARGET_ALL_PROPERTIES,
+    TARGET_HOUSE_CONSTRUCTION,
+    TARGET_LOAN_INTEREST,
+    TARGET_ALL_PLAYERS,
+    TARGET_DRAWING_PLAYER_UTILITIES,
+    TARGET_COMMERCIAL_PROPERTIES,
+    TARGET_ALL_RAILWAYS,
+    TARGET_ALL_HOTELS,
+    TARGET_CONSTRUCTION_SYSTEM,
+    TARGET_INSURANCE_PREMIUMS,
+    TARGET_RANDOM_PROPERTY_GROUP,
+    TARGET_RANDOM_PLAYER,
+    TARGET_RANDOM_DEVELOPED_PROPERTY
+
+} EventTargetType;
+
+typedef enum{
+
+    EVENT_VALUE_NONE,
+    EVENT_VALUE_LKR,
+    EVENT_VALUE_PERCENTAGE,
+    EVENT_VALUE_INTEREST_POINTS
+
+} EventValueType;
+
+typedef enum{
+
+    EVENT_IMMEDIATE,
+    EVENT_TEMPORARY
+
+} EventTiming;
+
+typedef struct{
+
+    EventCardType id;
+
+    char name[50];
+    char description[160];
+
+    EventEffectType effectType;
+    EventTargetType targetType;
+    EventValueType valueType;
+
+    int value;
+    int duration;
+
+    EventTiming timing;
+
+} EventCard;
+
+typedef struct{
+
+    EventCardType order[CARD_COUNT];
+
+    int topIndex;
+
+} EventDeck;
+
+
 
 typedef enum{
 
@@ -217,5 +298,18 @@ typedef struct{
     Loan loan;
 
 } Player;
+
+typedef enum{
+
+    CASH_EFFECT,
+    DAMAGE_EFFECT,
+    VALUE_EFFECT,
+    COST_EFFECT,
+    INTEREST_EFFECT,
+    RESTRICTION_EFFECT,
+    RENT_EFFECT,
+
+} EffectType;
+
 
 #endif

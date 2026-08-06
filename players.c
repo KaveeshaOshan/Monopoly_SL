@@ -1,8 +1,7 @@
 #include <string.h>
 #include "types.h"
 
-void initializeSinglePlayer(Player *p, short id, const char *name, StrategyType strategy)
-{
+void initializeSinglePlayer(Player *p, short id, const char *name, StrategyType strategy){
 
     p->strategy = strategy;
     p->ID = id;
@@ -33,8 +32,7 @@ void initializeSinglePlayer(Player *p, short id, const char *name, StrategyType 
 
 }
 
-void initializePlayers(Player players[4])
-{
+void initializePlayers(Player players[4]){
     initializeSinglePlayer(&players[0], OWNER_AGGRESSIVE_INVESTOR, "Aggressive Investor", STRATEGY_AGGRESSIVE);
     initializeSinglePlayer(&players[1], OWNER_CONSERVATIVE_BANKER, "Conservative Banker", STRATEGY_CONSERVATIVE);
     initializeSinglePlayer(&players[2], OWNER_RISK_TAKER, "Risk Taker", STRATEGY_RISK_TAKER);
