@@ -15,24 +15,6 @@ int turnOrder[NUM_PLAYERS];
 EventDeck deck; 
 
 
-
-/**typedef struct {
-
-    int currentRounds = 0;
-    int maxRounds = 500;
-    int GameState;
-    int Winner;
-    int NumberOfPlayers = 4;
-    int NumberOfSolventPlayers = 4;
-    int CurrentPlayer;
-    int CurrentInflation = 0;
-    int CurrentMarketBoom;
-    int CurrentEchonomicEvent;
-    int CurrentReginolEvent;
-    int CurrentGovermentRegulation;
-
-} GameState;**/
-
 typedef struct{
 
     int dice1;
@@ -180,12 +162,10 @@ void determineTurnOrder(int turnOrder[4]){
 
     for (int i = 0; i < 4; i++)
     {
-        printf(
-            "%d. %s\n",
-            i + 1,
-            getPlayerName(turnOrder[i])
-        );
+        printf("%d. %s\n", i + 1, getPlayerName(turnOrder[i]));
+        //printf(" %d\n ",turnOrder[i]);
     }
+
 }
 
 void movePlayer(Player *p, int dice){
@@ -199,54 +179,77 @@ void movePlayer(Player *p, int dice){
     }
 }
 
-void player_move(struct Player *player){
+void player_move(Player *theplayer){
 
     DiceOperations dice_value = get_random_dice_values();
 
     int is_double = (dice_value.dice1 == dice_value.dice2);
 
-    if(player->in_jail)
+    if(theplayer->in_jail)
     {
-        if(player->turns_remaining_Injail==0)
+        if(theplayer->turns_remaining_Injail==0)
         {
-            player->in_jail = false;
-            printf("%s left Jail after 3 turns.\n\n", getPlayerName(player->ID));
+            theplayer->in_jail = false;
+            printf("%s left Jail after 3 turns.\n\n", getPlayerName(theplayer->ID));
         }
 
         else if(is_double)
         {
-            player->in_jail = false;
-            player->turns_remaining_Injail = 0;
-            printf("%s rolled doubles and left Jail.\n\n", getPlayerName(player->ID));
+            theplayer->in_jail = false;
+            theplayer->turns_remaining_Injail = 0;
+            printf("%s rolled doubles and left Jail.\n\n", getPlayerName(theplayer->ID));
         }
-        else if (player->cash_balance >= 300) {
-            player->in_jail = false;
-            player->turns_remaining_Injail = 0;
-            printf("%s paid bail of LKR 300.\n\n", getPlayerName(player->ID));
+        else if (theplayer->cash_balance >= 300) {
+
+            theplayer->cash_balance -= 300;
+            theplayer->in_jail = false;
+            theplayer->turns_remaining_Injail = 0;
+            printf("%s paid bail of LKR 300.\n\n", getPlayerName(theplayer->ID));
         }
         else {
-            player->turns_remaining_Injail--;
-            printf("%s remains in jail and must skip the turn.\n", getPlayerName(player->ID));
+            theplayer->turns_remaining_Injail--;
+            printf("%s remains in jail and must skip the turn.\n", getPlayerName(theplayer->ID));
+
+            return;
         }
     }
 
-    int current_position = player->current_position;
-    int new_position = (player->current_position + dice) % 40;
-    printf("%s rolled %d.\n", getPlayerName(player->ID), dice);
-    printf("%s moved from Square %d to square %d.\n", getPlayerName(player->ID), player->current_position, new_position);
+    int current_position = theplayer->current_position;
+    int new_position = (theplayer->current_position + dice_value.sum_of_dice) % 40;
+    printf("%s rolled %d.\n", getPlayerName(theplayer->ID), dice_value.sum_of_dice);
+    printf("%s moved from Square %d to square %d.\n", getPlayerName(theplayer->ID), theplayer->current_position, new_position);
 
-    if (current_position + dice >= 40) {
-        player->passed_go++;
-        player->cash_balance += 2000;
-        printf("%s passed GO\n", getPlayerName(player->ID));
+    if (current_position + dice_value.sum_of_dice >= 40) {
+        theplayer->passed_go++;
+        theplayer->cash_balance += 2000;
+        printf("%s passed GO\n", getPlayerName(theplayer->ID));
         printf("Collected LKR 2000.\n");
-        printf("Current Balance : LKR %d.\n", player->cash_balance);
+        printf("Current Balance : LKR %d.\n", theplayer->cash_balance);
     }
-    player->current_position = new_position;
+    theplayer->current_position = new_position;
 
 }
 
+bool allPlayersPassedGo(const Player players[NUM_PLAYERS], const int passesAtRoundStart[NUM_PLAYERS]){
+    
+    for (int i = 0; i < NUM_PLAYERS; i++)
+    {
+        /*
+         * If the value has not increased, this player
+         * has not passed GO during the current Turn.
+         */
+        if (players[i].passed_go <= passesAtRoundStart[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void startgame(){
+
+    GameState gameState = {0};
 
     initializePlayers(player);
 
@@ -256,7 +259,119 @@ void startgame(){
 
     initializeEventCards(cards);
 
+    initializeEventDeck(&deck);
+
     shuffleEventDeck(&deck);
 
+    while (gameState.current_round <= gameState.max_rounds)
+    {
+        gameState.current_round = 1;
+        int passesAtRoundStart[NUM_PLAYERS];
 
+        /*
+         * Remember how many times each player had passed GO
+         * at the beginning of this round.
+         */
+        for (int i = 0; i < NUM_PLAYERS; i++)
+        {
+            passesAtRoundStart[i] = player[i].passed_go;
+        }
+
+        gameState.current_turn = 1;
+
+        printf("\n====================================\n""ROUND %d STARTED\n""====================================\n", gameState.current_round);
+
+        /*
+         * Continue playing turns until every player
+         * passes GO during this round.
+         */
+        while (!allPlayersPassedGo(player, passesAtRoundStart))
+        {
+            printf("\n---------- Turn %d ----------\n", gameState.current_turn);
+
+            /*
+             * One complete turn:
+             * every player rolls and moves.
+             */
+            for (int i = 0; i < NUM_PLAYERS; i++)
+            {
+                gameState.current_player = turnOrder[i];
+
+                Player *currentPlayer =
+                    &player[gameState.current_player];
+
+                printf("\n--- %s's movement ---\n\n", getPlayerName(currentPlayer->ID));
+
+                player_move(currentPlayer);
+
+                printf("%s is now on %s.\n\n", getPlayerName(currentPlayer->ID), gameboard[currentPlayer->current_position].name);
+
+                switch(gameboard[currentPlayer->current_position].Types){
+                    
+                    case Square_Property:
+                        
+                        break;
+
+                    case Square_Event:
+
+                        break; 
+
+                    case Square_Tax:
+
+                        break;
+                    
+                    case Square_Railway:
+
+                        break;
+                        
+                    case Square_Utility:
+
+                        break;
+
+                    case Square_Jail:
+
+                        break;
+
+                    case Square_Goto_Jail:
+
+                        break;
+
+                    case Square_Free_Parking:
+                        
+                        break;
+                        
+                    case Square_Bank:
+                        
+                        break;
+
+                    case Square_Insurance:
+
+                        break;
+
+                }
+            }
+
+            printf(
+                "\nTurn %d completed.\n",
+                gameState.current_turn
+            );
+
+            gameState.current_turn++;
+        }
+
+        printf(
+            "\n====================================\n"
+            "ROUND %d COMPLETED\n"
+            "Every player passed GO.\n"
+            "====================================\n",
+            gameState.current_round
+        );
+
+        gameState.current_round++;
+    }
+
+    printf(
+        "\nGame ended after %d rounds.\n",
+        gameState.max_rounds
+    );
 }

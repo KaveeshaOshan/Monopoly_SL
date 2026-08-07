@@ -8,7 +8,7 @@
 #define NUM_RAILWAYS 4
 #define NUM_UTILITIES 2
 #define NUM_PROPERTIES 22
-#define MAX_ROUNDS 50
+#define MAX_ROUNDS 5
 
 typedef enum{
 
@@ -172,8 +172,6 @@ typedef struct{
 
 } EventDeck;
 
-
-
 typedef enum{
 
     LOAN_NONE,
@@ -276,6 +274,25 @@ typedef struct{
 
 } Loan;
 
+typedef struct {
+
+    int current_round;
+    int current_turn;
+    int max_rounds;
+    int game_state;
+    int winner;
+    int number_of_players;
+    int number_of_solvent_players;
+    int current_player;
+    int current_inflation;
+    int current_interest;
+    int current_market_boom;
+    int current_echonomic_event;
+    int current_reginol_event;
+    int current_government_regulation;
+
+} GameState;
+
 typedef struct{
 
     //player identification
@@ -303,6 +320,8 @@ typedef struct{
 
     //player loans and stuff    
     Loan loan;
+
+    GameState gameState;
 
 } Player;
 
