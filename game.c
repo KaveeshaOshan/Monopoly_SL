@@ -236,7 +236,7 @@ bool allPlayersPassedGo(const Player players[NUM_PLAYERS], const int passesAtRou
     {
         /*
          * If the value has not increased, this player
-         * has not passed GO during the current Turn.
+         * has not passed GO during the current Round.
          */
         if (players[i].passed_go <= passesAtRoundStart[i])
         {
@@ -247,9 +247,14 @@ bool allPlayersPassedGo(const Player players[NUM_PLAYERS], const int passesAtRou
     return true;
 }
 
+
+
 void startgame(){
 
     GameState gameState = {0};
+
+    gameState.current_round = 1;
+    gameState.max_rounds = MAX_ROUNDS;
 
     initializePlayers(player);
 
@@ -265,7 +270,6 @@ void startgame(){
 
     while (gameState.current_round <= gameState.max_rounds)
     {
-        gameState.current_round = 1;
         int passesAtRoundStart[NUM_PLAYERS];
 
         /*
@@ -297,8 +301,7 @@ void startgame(){
             {
                 gameState.current_player = turnOrder[i];
 
-                Player *currentPlayer =
-                    &player[gameState.current_player];
+                Player *currentPlayer = &player[gameState.current_player];
 
                 printf("\n--- %s's movement ---\n\n", getPlayerName(currentPlayer->ID));
 
@@ -308,8 +311,12 @@ void startgame(){
 
                 switch(gameboard[currentPlayer->current_position].Types){
                     
+                    case Square_Start:
+
+                        break;
+
                     case Square_Property:
-                        
+
                         break;
 
                     case Square_Event:
@@ -346,6 +353,10 @@ void startgame(){
 
                     case Square_Insurance:
 
+                        break;
+
+                    default:
+                        
                         break;
 
                 }
