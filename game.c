@@ -547,6 +547,19 @@ int getLowestGroupDevelopmentLevel(Square gameboard[], PropertyGroup group){
     return minDevLevel;
 
 }
+
+bool isColourGroupBuildable(const Player *theplayer, const Square gameboard[], PropertyGroup group){
+
+    for(int i = 0; i<NUM_SQUARES; i++){
+        
+        if (!hasMonopoly(theplayer, gameboard, group) || theplayer->ID != gameboard[i].Data.property.ownerID || gameboard[i].Data.property.isMortgaged || gameboard[i].Data.property.isDamaged || gameboard[i].Data.property.isClosed) {    
+            return false;  // must own the full set
+        }
+
+    } // false if any property has a hotel
+
+    return true;
+}
     
 void startgame(){
 
