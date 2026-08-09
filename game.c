@@ -374,7 +374,7 @@ void buyProprty(Player *theplayer, int landed_square){
                     gameboard[landed_square].Data.property.ownerID = theplayer->ID;
                     theplayer->totalPropertiesOwned++;
                     theplayer->ownedAssets[landed_square] = true;
-
+                    
                     printf("%s bought %s for LKR %d\n", getPlayerName(theplayer->ID), gameboard[landed_square].name, gameboard[landed_square].Data.property.property_purchase_price);
                     printf("Remaining Balance: LKR %d\n", theplayer->cash_balance);
 
@@ -487,7 +487,21 @@ void handleGotoJail(Player *theplayer){
     printf("%s was sent to Jail.\n", getPlayerName(theplayer->ID));
  
 }
-    
+
+bool hasMonopoly(Player *theplayer, Square gameboard[], PropertyGroup group){
+
+    for(int i = 0; i<NUM_SQUARES; i++){
+
+        if(gameboard[i].Data.property.group == group && gameboard[i].Data.property.ownerID != theplayer->ID){
+            return false;
+        }
+
+    }
+
+    return true;
+
+}
+  
 void startgame(){
 
     GameState gameState = {0};
