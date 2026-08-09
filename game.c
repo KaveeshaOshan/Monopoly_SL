@@ -501,7 +501,30 @@ bool hasMonopoly(Player *theplayer, Square gameboard[], PropertyGroup group){
     return true;
 
 }
-  
+
+int getDevelopmentLevel(Property *property){
+
+    if(!property->hasHotel && property->houses_count == 0){
+        return 0;
+    }
+    if(!property->hasHotel && property->houses_count == 1){
+        return 1;
+    }
+    if(!property->hasHotel && property->houses_count == 2){
+        return 2;
+    }
+    if(!property->hasHotel && property->houses_count == 3){
+        return 3;
+    }
+    if(!property->hasHotel && property->houses_count == 4){
+        return 4;
+    }
+    if(property->hasHotel){
+        return 5;
+    }
+    
+}
+    
 void startgame(){
 
     GameState gameState = {0};
