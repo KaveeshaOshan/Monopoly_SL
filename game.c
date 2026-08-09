@@ -351,6 +351,15 @@ void declareBankrupt(Player *bankruptPlayer){
     bankruptPlayer->cash_balance = 0;
     bankruptPlayer->networth = 0;
 
+    bankruptPlayer->totalPropertiesOwned = 0;
+    bankruptPlayer->railwayOwned = 0;
+    bankruptPlayer->UtilitiesOwned = 0;
+
+    for (int i = 0; i < NUM_SQUARES; i++)
+    {
+        bankruptPlayer->ownedAssets[i] = false;
+    }
+
     printf(
         "%s has become bankrupt.\n",
         getPlayerName(bankruptPlayer->ID)
@@ -466,6 +475,16 @@ void handlePropertySquare(Player *theplayer, int landed_square){
         
 
 }
+
+void handleGotoJail(Player *theplayer){
+
+    theplayer->current_position = 10;
+    theplayer->in_jail = true;
+    theplayer->turns_remaining_Injail = 3;
+
+    printf("%s was sent to Jail.\n", getPlayerName(theplayer->ID));
+ 
+}
     
 void startgame(){
 
@@ -560,6 +579,15 @@ void startgame(){
 
                     case Square_Event:
 
+                        const EventCard *drawnCard = drawEventCard(&deck, cards);
+
+                        printEventCard(drawnCard);
+
+                        /*
+                         * Applying the card's actual effect
+                         * will be implemented later.
+                         */
+
                         break; 
 
                     case Square_Tax:
@@ -576,10 +604,12 @@ void startgame(){
 
                     case Square_Jail:
 
+                        printf("%s is just visiting Jail.\n", getPlayerName(currentPlayer->ID));
                         break;
 
                     case Square_Goto_Jail:
-
+                        
+                        handleGotoJail(currentPlayer);
                         break;
 
                     case Square_Free_Parking:

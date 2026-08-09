@@ -13,10 +13,6 @@ void shuffleEventDeck(EventDeck *deck);
 
 const EventCard *drawEventCard(EventDeck *deck, const EventCard cards[CARD_COUNT]);
 
-bool validateEventCards(const EventCard cards[CARD_COUNT]);
-
-bool validateEventDeck(const EventDeck *deck);
-
 void printEventCard(const EventCard *card);
 
 
