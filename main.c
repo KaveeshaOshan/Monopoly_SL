@@ -10,6 +10,8 @@
 
 int main(){
 
+    srand(12345U);
+
     startgame();
 
     return 0;

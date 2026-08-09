@@ -183,7 +183,7 @@ void player_move(Player *theplayer){
 
     DiceOperations dice_value = get_random_dice_values();
 
-    int is_double = (dice_value.dice1 == dice_value.dice2);
+    bool is_double = (dice_value.dice1 == dice_value.dice2);
 
     if(theplayer->in_jail)
     {
@@ -234,10 +234,11 @@ bool allPlayersPassedGo(const Player players[NUM_PLAYERS], const int passesAtRou
     
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
-        /*
-         * If the value has not increased, this player
-         * has not passed GO during the current Round.
-         */
+        if (players[i].isBankrupt)
+        {
+            continue;
+        }
+
         if (players[i].passed_go <= passesAtRoundStart[i])
         {
             return false;
@@ -247,6 +248,204 @@ bool allPlayersPassedGo(const Player players[NUM_PLAYERS], const int passesAtRou
     return true;
 }
 
+int calculatePropertyRent(const Property *property){
+
+    if (property == NULL)
+    {
+        return 0;
+    }
+
+    //  cannot currently produce rent.
+    if (property->isMortgaged ||
+        property->isClosed ||
+        property->isDamaged)
+    {
+        return 0;
+    }
+
+    //Index 5 stores the hotel rent.
+    if (property->hasHotel)
+    {
+        return property->rent_with_buildings[5];
+    }
+
+    //Counting the rent if it is a normal house
+    if (property->houses_count >= 0 &&
+        property->houses_count <= 4)
+    {
+        return property->rent_with_buildings[
+            property->houses_count
+        ];
+    }
+
+    /* Invalid building information. */
+    return 0;
+}
+
+void handleRent(Player *theplayer, int landed_square){
+
+    int rent_to_pay = calculatePropertyRent(&gameboard[landed_square].Data.property);
+        
+    if (theplayer->cash_balance < rent_to_pay)
+    {
+        printf(
+            "%s must pay LKR %d rent, but only has LKR %d.\n",
+            getPlayerName(theplayer->ID),
+            rent_to_pay,
+            theplayer->cash_balance
+        );
+        return;
+
+    }
+
+    printf("%s owes %s LKR %d rent for %s.\n", getPlayerName(theplayer->ID), getPlayerName(gameboard[landed_square].Data.property.ownerID), rent_to_pay, gameboard[landed_square].name);
+
+    //Deducting the rent money from the tenant
+    theplayer->cash_balance -= rent_to_pay;
+        
+    //Adding the rent money to the owner
+    int ownerIndex = gameboard[landed_square].Data.property.ownerID;
+
+    player[ownerIndex].cash_balance += rent_to_pay;
+
+    printf("%s now has LKR %d.\n", getPlayerName(theplayer->ID), theplayer->cash_balance);
+
+    
+}
+
+void declareBankrupt(Player *bankruptPlayer){
+
+    if (bankruptPlayer == NULL)
+    {
+        return;
+    }
+
+    /* Prevent declaring the same player bankrupt twice. */
+    if (bankruptPlayer->isBankrupt)
+    {
+        return;
+    }
+
+    bankruptPlayer->isBankrupt = true;
+    bankruptPlayer->cash_balance = 0;
+    bankruptPlayer->networth = 0;
+
+    printf(
+        "%s has become bankrupt.\n",
+        getPlayerName(bankruptPlayer->ID)
+    );
+}
+
+void handlePropertySquare(Player *theplayer, int landed_square){
+
+    if(gameboard[landed_square].Data.property.ownerID == OWNER_BANK){
+        
+        switch(theplayer->strategy)
+        {
+            case STRATEGY_AGGRESSIVE:
+                if(theplayer->cash_balance >= (gameboard[landed_square].Data.property.property_purchase_price + gameboard[landed_square].Data.property.base_rent)){
+
+                    theplayer->cash_balance -= (gameboard[landed_square].Data.property.property_purchase_price);
+                    gameboard[landed_square].Data.property.ownerID = theplayer->ID;
+                    theplayer->totalPropertiesOwned++;
+                    theplayer->ownedAssets[landed_square] = true;
+
+                    printf("%s bought %s for LKR %d\n", getPlayerName(theplayer->ID), gameboard[landed_square].name, gameboard[landed_square].Data.property.property_purchase_price);
+                    printf("Remaining Balance: LKR %d\n", theplayer->cash_balance);
+
+                }
+                break;
+
+            case STRATEGY_CONSERVATIVE:
+
+                if(theplayer->cash_balance*0.5 <= theplayer->cash_balance - gameboard[landed_square].Data.property.property_purchase_price ){
+
+                    theplayer->cash_balance -= (gameboard[landed_square].Data.property.property_purchase_price);
+                    gameboard[landed_square].Data.property.ownerID = theplayer->ID;
+                    theplayer->totalPropertiesOwned++;
+                    theplayer->ownedAssets[landed_square] = true;
+
+                    printf("%s bought %s for LKR %d\n", getPlayerName(theplayer->ID), gameboard[landed_square].name, gameboard[landed_square].Data.property.property_purchase_price);
+                    printf("Remaining Balance: LKR %d\n", theplayer->cash_balance);
+
+                }
+                
+                break;
+
+            case STRATEGY_RISK_TAKER:
+
+                if(theplayer->cash_balance >= gameboard[landed_square].Data.property.property_purchase_price){    
+
+                    theplayer->cash_balance -= (gameboard[landed_square].Data.property.property_purchase_price);
+                    gameboard[landed_square].Data.property.ownerID = theplayer->ID;
+                    theplayer->totalPropertiesOwned++;
+                    theplayer->ownedAssets[landed_square] = true;
+
+                    printf("%s bought %s for LKR %d\n", getPlayerName(theplayer->ID), gameboard[landed_square].name, gameboard[landed_square].Data.property.property_purchase_price);
+                    printf("Remaining Balance: LKR %d\n", theplayer->cash_balance);
+
+                }  
+                
+                break;
+
+            case STRATEGY_OPPORTUNISTIC:
+
+                /**if(theplayer->cash_balance >= ){
+
+                    //The fuuuuuuucccckkkkk
+
+                } **/
+
+                break;
+            
+        }
+
+    }
+    else if(gameboard[landed_square].Data.property.ownerID == theplayer->ID){
+        
+        printf("No rent is collected.\n");
+        printf("%s already owns %s\n", getPlayerName(theplayer->ID), gameboard[landed_square].name);
+        
+    }
+    else{
+
+        if(gameboard[landed_square].Data.property.isMortgaged || gameboard[landed_square].Data.property.isDamaged || gameboard[landed_square].Data.property.isClosed || player[gameboard[landed_square].Data.property.ownerID].isBankrupt){
+
+            printf("%s cannot pay rent\n", getPlayerName(theplayer->ID));
+            return;
+
+        }
+        if(theplayer->cash_balance < calculatePropertyRent(&gameboard[landed_square].Data.property)){
+            
+            printf(
+                "%s must pay LKR %d rent, but only has LKR %d.\n",
+                getPlayerName(theplayer->ID),
+                calculatePropertyRent(&gameboard[landed_square].Data.property),
+                theplayer->cash_balance
+            );
+            int ownerIndex = gameboard[landed_square].Data.property.ownerID;
+
+            player[ownerIndex].cash_balance += theplayer->cash_balance;
+            player[ownerIndex].networth += theplayer->cash_balance;
+            
+            theplayer->cash_balance = 0;
+
+            declareBankrupt(theplayer);
+
+        }
+        else{
+
+                handleRent(theplayer, landed_square);
+
+        }
+
+        
+
+    }
+        
+
+}
+    
 
 
 void startgame(){
@@ -303,6 +502,16 @@ void startgame(){
 
                 Player *currentPlayer = &player[gameState.current_player];
 
+                if (currentPlayer->isBankrupt)
+                {
+                    printf(
+                        "%s is bankrupt and skips this turn.\n",
+                        getPlayerName(currentPlayer->ID)
+                    );
+
+                    continue;
+                }
+
                 printf("\n--- %s's movement ---\n\n", getPlayerName(currentPlayer->ID));
 
                 player_move(currentPlayer);
@@ -316,6 +525,14 @@ void startgame(){
                         break;
 
                     case Square_Property:
+
+                        handlePropertySquare(currentPlayer, currentPlayer->current_position);
+
+                        if(currentPlayer->isBankrupt){
+
+                            break;
+
+                        } 
 
                         break;
 
@@ -386,3 +603,4 @@ void startgame(){
         gameState.max_rounds
     );
 }
+
