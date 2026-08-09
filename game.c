@@ -264,6 +264,26 @@ bool allPlayersPassedGo(const Player players[NUM_PLAYERS], const int passesAtRou
     return true;
 }
 
+bool payPropertyRent(Player *player, int rent){
+
+    if (player == NULL)
+    {
+        return false;
+    }
+
+    if (player->cash_balance < rent)
+    {
+        printf("%s does not have enough cash to pay rent. Needs LKR %d but has only LKR %d.\n", getPlayerName(player->ID), rent, player->cash_balance);
+
+        return false;
+    }
+
+    player->cash_balance -= rent;
+    player->networth -= rent;
+
+    return true;
+}
+
 int calculatePropertyRent(const Property *property){
 
     if (property == NULL)
@@ -272,9 +292,7 @@ int calculatePropertyRent(const Property *property){
     }
 
     //  cannot currently produce rent.
-    if (property->isMortgaged ||
-        property->isClosed ||
-        property->isDamaged)
+    if (property->isMortgaged || property->isClosed || property->isDamaged)
     {
         return 0;
     }
@@ -286,12 +304,9 @@ int calculatePropertyRent(const Property *property){
     }
 
     //Counting the rent if it is a normal house
-    if (property->houses_count >= 0 &&
-        property->houses_count <= 4)
+    if (property->houses_count >= 0 && property->houses_count <= 4)
     {
-        return property->rent_with_buildings[
-            property->houses_count
-        ];
+        return property->rent_with_buildings[property->houses_count];
     }
 
     /* Invalid building information. */
@@ -304,22 +319,10 @@ void handleRent(Player *theplayer, int landed_square){
         
     int ownerIndex = gameboard[landed_square].Data.property.ownerID;
 
-    if (theplayer->cash_balance < rent_to_pay)
-    {
-        printf("%s must pay LKR %d rent, but only has LKR %d.\n", getPlayerName(theplayer->ID), rent_to_pay, theplayer->cash_balance);
-        
-        return;
-
-    }
-
-    //Deducting the rent money from the tenant
-    theplayer->cash_balance -= rent_to_pay;
+    payPropertyRent(theplayer, rent_to_pay);
 
     //Adding the rent money to the owner
     player[ownerIndex].cash_balance += rent_to_pay;
-
-    //Updating the networth of the tenant
-    theplayer->networth -= rent_to_pay;
 
     //Updating the networth of the owner
     player[ownerIndex].networth += rent_to_pay;
@@ -384,8 +387,8 @@ void buyProprty(Player *theplayer, int landed_square){
 
                     theplayer->cash_balance -= (gameboard[landed_square].Data.property.property_purchase_price);
                     gameboard[landed_square].Data.property.ownerID = theplayer->ID;
-                    theplayer->totalPropertiesOwned++;
                     theplayer->ownedAssets[landed_square] = true;
+                    theplayer->totalPropertiesOwned++;
 
                     printf("%s bought %s for LKR %d\n", getPlayerName(theplayer->ID), gameboard[landed_square].name, gameboard[landed_square].Data.property.property_purchase_price);
                     printf("Remaining Balance: LKR %d\n", theplayer->cash_balance);
@@ -423,8 +426,6 @@ void buyProprty(Player *theplayer, int landed_square){
         }
 
 }
-
-
 
 void handlePropertySquare(Player *theplayer, int landed_square){
 
@@ -477,7 +478,6 @@ void handlePropertySquare(Player *theplayer, int landed_square){
 
 }
 
-
 void handleGotoJail(Player *theplayer){
 
     theplayer->current_position = 10;
@@ -487,8 +487,6 @@ void handleGotoJail(Player *theplayer){
     printf("%s was sent to Jail.\n", getPlayerName(theplayer->ID));
  
 }
-
-
     
 void startgame(){
 
