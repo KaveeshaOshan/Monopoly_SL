@@ -524,6 +524,29 @@ int getDevelopmentLevel(Property *property){
     }
     
 }
+
+int getLowestGroupDevelopmentLevel(Square gameboard[], PropertyGroup group){
+
+    int minDevLevel = 10;
+
+    for(int i=0; i<NUM_SQUARES; i++){
+
+        if(gameboard[i].Data.property.group == group){
+
+            int currentProperty = getDevelopmentLevel()
+
+        }
+
+        if(minDevLevel > currentProperty){
+
+            minDevLevel = currentProperty;
+
+        }
+
+    }
+    return minDevLevel;
+
+}
     
 void startgame(){
 
