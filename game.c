@@ -131,12 +131,12 @@ void rankPlayerGroup(TurnResult results[], int start, int end){
     }
 }
 
-void determineTurnOrder(int turnOrder[4]){
+void determineTurnOrder(int order[NUM_PLAYERS]){
 
-    TurnResult results[4];
+    TurnResult results[NUM_PLAYERS];
 
     /* Connect each position to one player */
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < NUM_PLAYERS; i++)
     {
         results[i].playerID = i;
         results[i].diceTotal = 0;
@@ -154,7 +154,7 @@ void determineTurnOrder(int turnOrder[4]){
     /* Save the final player IDs */
     for (int i = 0; i < 4; i++)
     {
-        turnOrder[i] = results[i].playerID;
+        order[i] = results[i].playerID;
     }
 
     printf("\nFinal Turn Order\n");
@@ -162,8 +162,8 @@ void determineTurnOrder(int turnOrder[4]){
 
     for (int i = 0; i < 4; i++)
     {
-        printf("%d. %s\n", i + 1, getPlayerName(turnOrder[i]));
-        //printf(" %d\n ",turnOrder[i]);
+        printf("%d. %s\n", i + 1, getPlayerName(order[i]));
+
     }
 
 }
