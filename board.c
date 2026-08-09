@@ -58,9 +58,9 @@ void Add_Data_Normal_Square(Square gameboard[40], short SquareIndex, const char*
 void initialize_board(Square gameboard[40]) {
     
     Add_Data_Normal_Square(gameboard,  0, "GO",                           Square_Start);
-    InitializePropertySquare(gameboard,  1, "Pettah",                       Square_Property, Group_Brown,       1500,  750,  100,    9000,   2000);
+    InitializePropertySquare(gameboard,  1, "Pettah",                       Square_Property, Group_Brown,       1500,  750,  100,     500,   2000);
     Add_Data_Normal_Square(gameboard,  2, "Community Development Fund",   Square_Event);
-    InitializePropertySquare(gameboard,  3, "Maradana",                     Square_Property, Group_Brown,       1800,  900,  120,    10800,   2000);
+    InitializePropertySquare(gameboard,  3, "Maradana",                     Square_Property, Group_Brown,       1800,  750,  120,     500,   2000);
     Add_Data_Normal_Square(gameboard,  4, "Income Tax",                   Square_Tax);
     
     gameboard[5].index = 5;
@@ -73,13 +73,13 @@ void initialize_board(Square gameboard[40]) {
     gameboard[5].Data.railway.isMortgaged = false;
     gameboard[5].Data.railway.isLoanLocked = false;
     
-    InitializePropertySquare(gameboard,  6, "Bambalapitiya",                Square_Property, Group_Light_Blue,  2500, 1250,  180,    16200,   2250);
+    InitializePropertySquare(gameboard,  6, "Bambalapitiya",                Square_Property, Group_Light_Blue,  2500, 1250,  180,     750,   3000);
     Add_Data_Normal_Square(gameboard,  7, "National Event Card",          Square_Event);
-    InitializePropertySquare(gameboard,  8, "Wellawatte",                   Square_Property, Group_Light_Blue,  2700, 1350,  200,    18000,   2250);
-    InitializePropertySquare(gameboard,  9, "Mount Lavinia",                Square_Property, Group_Light_Blue,  3000, 1500,  220,    19800,   2250);
+    InitializePropertySquare(gameboard,  8, "Wellawatte",                   Square_Property, Group_Light_Blue,  2700, 1250,  200,     750,   3000);
+    InitializePropertySquare(gameboard,  9, "Mount Lavinia",                Square_Property, Group_Light_Blue,  3000, 1250,  220,     750,   3000);
 
     Add_Data_Normal_Square(gameboard, 10, "Jail / Just Visiting",         Square_Jail);
-    InitializePropertySquare(gameboard, 11, "Nugegoda",                    Square_Property, Group_Pink,        3500, 1750,  260,     23400,   2500);
+    InitializePropertySquare(gameboard, 11, "Nugegoda",                    Square_Property, Group_Pink,        3500, 1750,  260,    1000,   4000);
     
     gameboard[12].index = 12;
     gameboard[12].Types = Square_Utility;
@@ -91,8 +91,8 @@ void initialize_board(Square gameboard[40]) {
     gameboard[12].Data.utility.isMortgaged = false;
     gameboard[12].Data.utility.isLoanLocked = false;
 
-    InitializePropertySquare(gameboard, 13, "Maharagama",                  Square_Property, Group_Pink,        3800, 1900,  280,     25200,   2500);
-    InitializePropertySquare(gameboard, 14, "Kottawa",                     Square_Property, Group_Pink,        4000, 2000,  300,     27000,   2500);
+    InitializePropertySquare(gameboard, 13, "Maharagama",                  Square_Property, Group_Pink,        3800, 1750,  280,    1000,   4000);
+    InitializePropertySquare(gameboard, 14, "Kottawa",                     Square_Property, Group_Pink,        4000, 1750,  300,    1000,   4000);
     
     gameboard[15].index = 15;
     gameboard[15].Types = Square_Railway;
@@ -104,16 +104,16 @@ void initialize_board(Square gameboard[40]) {
     gameboard[15].Data.railway.isMortgaged = false;
     gameboard[15].Data.railway.isLoanLocked = false;
 
-    InitializePropertySquare(gameboard, 16, "Negombo",                     Square_Property, Group_Orange,      4500, 2250,  350,     2750, 6000);
+    InitializePropertySquare(gameboard, 16, "Negombo",                     Square_Property, Group_Orange,      4500, 2250,  350,    1250,   5000);
     Add_Data_Normal_Square(gameboard, 17, "Sri Lanka Insurance",          Square_Insurance);
-    InitializePropertySquare(gameboard, 18, "Katunayake",                  Square_Property, Group_Orange,      4700, 2250,  370,     1250 , 5000 );
-    InitializePropertySquare(gameboard, 19, "Ja-Ela",                      Square_Property, Group_Orange,      5000, 2500,  400,     2750, 6000);
+    InitializePropertySquare(gameboard, 18, "Katunayake",                  Square_Property, Group_Orange,      4700, 2250,  370,    1250,   5000);
+    InitializePropertySquare(gameboard, 19, "Ja-Ela",                      Square_Property, Group_Orange,      5000, 2250,  400,    1250,   5000);
 
     Add_Data_Normal_Square(gameboard, 20, "Free Parking",                 Square_Free_Parking);
-    InitializePropertySquare(gameboard, 21, "Kandy City",                  Square_Property, Group_Red,         5500, 2750,  450,     40500,   3000);
+    InitializePropertySquare(gameboard, 21, "Kandy City",                  Square_Property, Group_Red,         5500, 2750,  450,    1500,   6000);
     Add_Data_Normal_Square(gameboard, 22, "National Event Card",          Square_Event);
-    InitializePropertySquare(gameboard, 23, "Peradeniya",                  Square_Property, Group_Red,         5800, 2900,  480,     43200,   3000);
-    InitializePropertySquare(gameboard, 24, "Katugastota",                 Square_Property, Group_Red,         6000, 3000,  500,     45000,   3000);
+    InitializePropertySquare(gameboard, 23, "Peradeniya",                  Square_Property, Group_Red,         5800, 2750,  480,    1500,   6000);
+    InitializePropertySquare(gameboard, 24, "Katugastota",                 Square_Property, Group_Red,         6000, 2750,  500,    1500,   6000);
     
     gameboard[25].index = 25;
     gameboard[25].Types = Square_Railway;
@@ -125,8 +125,8 @@ void initialize_board(Square gameboard[40]) {
     gameboard[25].Data.railway.isMortgaged = false;
     gameboard[25].Data.railway.isLoanLocked = false;
     
-    InitializePropertySquare(gameboard, 26, "Galle Fort",                  Square_Property, Group_Yellow,      6500, 3250,  600,     54000,   4000);
-    InitializePropertySquare(gameboard, 27, "Unawatuna",                   Square_Property, Group_Yellow,      6800, 3400,  620,     55800,   4000);
+    InitializePropertySquare(gameboard, 26, "Galle Fort",                  Square_Property, Group_Yellow,      6500, 3250,  600,    2000,   8000);
+    InitializePropertySquare(gameboard, 27, "Unawatuna",                   Square_Property, Group_Yellow,      6800, 3250,  620,    2000,   8000);
     
     gameboard[28].index = 28;
     gameboard[28].Types = Square_Utility;
@@ -138,12 +138,12 @@ void initialize_board(Square gameboard[40]) {
     gameboard[28].Data.utility.isMortgaged = false;
     gameboard[28].Data.utility.isLoanLocked = false;
     
-    InitializePropertySquare(gameboard, 29, "Hikkaduwa",                   Square_Property, Group_Yellow,      7000, 3500,  650,     58500,   4000);
+    InitializePropertySquare(gameboard, 29, "Hikkaduwa",                   Square_Property, Group_Yellow,      7000, 3250,  650,    2000,   8000);
     Add_Data_Normal_Square(gameboard, 30, "Go To Jail",                   Square_Goto_Jail);
-    InitializePropertySquare(gameboard, 31, "Jaffna Town",                 Square_Property, Group_Green,       8000, 4000,  750,     67500,   5000);
-    InitializePropertySquare(gameboard, 32, "Nallur",                      Square_Property, Group_Green,       8300, 4150,  780,     70200,   5000);
+    InitializePropertySquare(gameboard, 31, "Jaffna Town",                 Square_Property, Group_Green,       8000, 4000,  750,    2500,  10000);
+    InitializePropertySquare(gameboard, 32, "Nallur",                      Square_Property, Group_Green,       8300, 4000,  780,    2500,  10000);
     Add_Data_Normal_Square(gameboard, 33, "Ceylinco Insurance",           Square_Insurance);
-    InitializePropertySquare(gameboard, 34, "Trincomalee",                 Square_Property, Group_Green,       8500, 4250,  800,     72000,   5000);
+    InitializePropertySquare(gameboard, 34, "Trincomalee",                 Square_Property, Group_Green,       8500, 4000,  800,    2500,  10000);
     
     gameboard[35].index = 35;
     gameboard[35].Types = Square_Railway;
@@ -156,7 +156,7 @@ void initialize_board(Square gameboard[40]) {
     gameboard[35].Data.railway.isLoanLocked = false;
 
     Add_Data_Normal_Square(gameboard, 36, "National Event Card",          Square_Event);
-    InitializePropertySquare(gameboard, 37, "Nuwara Eliya",                Square_Property, Group_Dark_Blue,  10000, 5000, 1000,     90000,   6000);
+    InitializePropertySquare(gameboard, 37, "Nuwara Eliya",                Square_Property, Group_Dark_Blue,  10000, 5000, 1000,    3000,  12000);
     Add_Data_Normal_Square(gameboard, 38, "Bank of Ceylon",               Square_Bank);
-    InitializePropertySquare(gameboard, 39, "Galle Face",                  Square_Property, Group_Dark_Blue,  12000, 6000, 1200,     108000,  6000);
+    InitializePropertySquare(gameboard, 39, "Galle Face",                  Square_Property, Group_Dark_Blue,  12000, 5000, 1200,    3000,  12000);
 }

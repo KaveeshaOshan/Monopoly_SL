@@ -306,12 +306,8 @@ void handleRent(Player *theplayer, int landed_square){
 
     if (theplayer->cash_balance < rent_to_pay)
     {
-        printf(
-            "%s must pay LKR %d rent, but only has LKR %d.\n",
-            getPlayerName(theplayer->ID),
-            rent_to_pay,
-            theplayer->cash_balance
-        );
+        printf("%s must pay LKR %d rent, but only has LKR %d.\n", getPlayerName(theplayer->ID), rent_to_pay, theplayer->cash_balance);
+        
         return;
 
     }
@@ -328,7 +324,7 @@ void handleRent(Player *theplayer, int landed_square){
     //Updating the networth of the owner
     player[ownerIndex].networth += rent_to_pay;
 
-    printf("%s paid LKR %d rent to %s.\n", getPlayerName(theplayer->ID), rent_to_pay, getPlayerName(owner->ID));
+    printf("%s paid LKR %d rent to %s.\n", getPlayerName(theplayer->ID), rent_to_pay, getPlayerName(theplayer->ID));
 
     printf("%s now has LKR %d.\n", getPlayerName(theplayer->ID), theplayer->cash_balance);
 
@@ -360,20 +356,16 @@ void declareBankrupt(Player *bankruptPlayer){
         bankruptPlayer->ownedAssets[i] = false;
     }
 
-    printf(
-        "%s has become bankrupt.\n",
-        getPlayerName(bankruptPlayer->ID)
-    );
+    printf("%s has become bankrupt.\n",getPlayerName(bankruptPlayer->ID));
+
 }
 
-void handlePropertySquare(Player *theplayer, int landed_square){
+void buyProprty(Player *theplayer, int landed_square){
 
-    if(gameboard[landed_square].Data.property.ownerID == OWNER_BANK){
-        
-        switch(theplayer->strategy)
-        {
-            case STRATEGY_AGGRESSIVE:
-                if(theplayer->cash_balance >= (gameboard[landed_square].Data.property.property_purchase_price + gameboard[landed_square].Data.property.base_rent)){
+    switch(theplayer->strategy)
+    {
+        case STRATEGY_AGGRESSIVE:
+            if(theplayer->cash_balance >= (gameboard[landed_square].Data.property.property_purchase_price + gameboard[landed_square].Data.property.base_rent)){
 
                     theplayer->cash_balance -= (gameboard[landed_square].Data.property.property_purchase_price);
                     gameboard[landed_square].Data.property.ownerID = theplayer->ID;
@@ -430,7 +422,16 @@ void handlePropertySquare(Player *theplayer, int landed_square){
             
         }
 
-    }
+}
+
+
+
+void handlePropertySquare(Player *theplayer, int landed_square){
+
+    if(gameboard[landed_square].Data.property.ownerID == OWNER_BANK){
+        
+        buyProprty(theplayer,landed_square);
+    } 
     else if(gameboard[landed_square].Data.property.ownerID == theplayer->ID){
         
         printf("No rent is collected.\n");
@@ -476,6 +477,7 @@ void handlePropertySquare(Player *theplayer, int landed_square){
 
 }
 
+
 void handleGotoJail(Player *theplayer){
 
     theplayer->current_position = 10;
@@ -485,6 +487,8 @@ void handleGotoJail(Player *theplayer){
     printf("%s was sent to Jail.\n", getPlayerName(theplayer->ID));
  
 }
+
+
     
 void startgame(){
 
@@ -566,14 +570,14 @@ void startgame(){
                         break;
 
                     case Square_Property:
-
-                        handlePropertySquare(currentPlayer, currentPlayer->current_position);
-
+                        
                         if(currentPlayer->isBankrupt){
 
                             break;
 
-                        } 
+                        }
+
+                        handlePropertySquare(currentPlayer, currentPlayer->current_position);
 
                         break;
 

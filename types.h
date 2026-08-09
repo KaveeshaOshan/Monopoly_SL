@@ -8,7 +8,7 @@
 #define NUM_RAILWAYS 4
 #define NUM_UTILITIES 2
 #define NUM_PROPERTIES 22
-#define MAX_ROUNDS 2
+#define MAX_ROUNDS 500
 
 typedef enum{
 
