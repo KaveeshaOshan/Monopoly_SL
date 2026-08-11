@@ -327,7 +327,7 @@ void handleRent(Player *theplayer, int landed_square){
     //Updating the networth of the owner
     player[ownerIndex].networth += rent_to_pay;
 
-    printf("%s paid LKR %d rent to %s.\n", getPlayerName(theplayer->ID), rent_to_pay, getPlayerName(theplayer->ID));
+    printf("%s paid LKR %d rent to %s.\n", getPlayerName(theplayer->ID), rent_to_pay, getPlayerName(ownerIndex));
 
     printf("%s now has LKR %d.\n", getPlayerName(theplayer->ID), theplayer->cash_balance);
 
@@ -504,10 +504,16 @@ bool hasMonopoly(Player *theplayer, Square gameboard[], PropertyGroup group){
 
 int getDevelopmentLevel(Property *property){
 
-    if(!property->hasHotel && property->houses_count == 0){
+    if(property->houses_count<0 ||property->houses_count>4 || !property->hasHotel){
+        return -1; //Error
+    }
+    if(property == NULL){
+        return -1; //Error
+    }
+    else if(!property->hasHotel && property->houses_count == 0){
         return 0;
     }
-    if(!property->hasHotel && property->houses_count == 1){
+    else if(!property->hasHotel && property->houses_count == 1){
         return 1;
     }
     if(!property->hasHotel && property->houses_count == 2){
@@ -533,14 +539,13 @@ int getLowestGroupDevelopmentLevel(Square gameboard[], PropertyGroup group){
 
         if(gameboard[i].Data.property.group == group){
 
-            int currentProperty = getDevelopmentLevel()
+            int currentProperty = getDevelopmentLevel(&gameboard[i].Data.property);
 
-        }
+            if(minDevLevel > currentProperty){
 
-        if(minDevLevel > currentProperty){
+                minDevLevel = currentProperty;
 
-            minDevLevel = currentProperty;
-
+            }
         }
 
     }
@@ -548,11 +553,18 @@ int getLowestGroupDevelopmentLevel(Square gameboard[], PropertyGroup group){
 
 }
 
-bool isColourGroupBuildable(const Player *theplayer, const Square gameboard[], PropertyGroup group){
+bool isColourGroupBuildable(Player *theplayer, Square gameboard[], PropertyGroup group){
+
+    bool has_monopoly = hasMonopoly(theplayer, gameboard, group);
 
     for(int i = 0; i<NUM_SQUARES; i++){
-        
-        if (!hasMonopoly(theplayer, gameboard, group) || theplayer->ID != gameboard[i].Data.property.ownerID || gameboard[i].Data.property.isMortgaged || gameboard[i].Data.property.isDamaged || gameboard[i].Data.property.isClosed) {    
+        if (gameboard[i].Types != Square_Property){
+            continue;
+        }
+        if (gameboard[i].Data.property.group != group){
+            continue;
+        }
+        if (!has_monopoly || theplayer->ID != gameboard[i].Data.property.ownerID || gameboard[i].Data.property.isMortgaged || gameboard[i].Data.property.isDamaged || gameboard[i].Data.property.isClosed) {    
             return false;  // must own the full set
         }
 
@@ -560,7 +572,174 @@ bool isColourGroupBuildable(const Player *theplayer, const Square gameboard[], P
 
     return true;
 }
+
+bool canBuildHouse(Player *player, Square gameboard[], int propertyIndex){
+
     
+    // 1. A bankrupt player cannot build.
+    if (player->isBankrupt){
+        
+        return false;
+        
+    }
+
+    // 2. The selected square must be a property.
+    if (gameboard[propertyIndex].Types != Square_Property){
+        
+        return false;
+    }
+
+    Property *property = &gameboard[propertyIndex].Data.property;
+
+    // 3. The player must own this property.
+    if (property->ownerID != player->ID){
+        
+        return false;
+    }
+
+    // 4. The property must belong to a valid colour group.
+    if (property->group == Group_None){
+        
+        return false;
+    }
+
+    // 5. The player must own every property in this colour group.
+    if (!hasMonopoly(player, gameboard, property->group)){
+        return false;
+    }
+
+    // 6. No property in the group may be mortgaged, damaged or closed.
+    if (!isColourGroupBuildable(player, gameboard, property->group)){
+        
+        return false;
+
+    }
+
+    // 7. A property with a hotel cannot receive a house.
+    if (property->hasHotel){
+        return false;
+    }
+
+    // 8. House count must be between 0 and 3.
+    // A property cannot have more than four houses.
+    if (property->houses_count < 0 || property->houses_count >= 4){
+        
+        return false;
+        
+    }
+
+    // 9. The house price must be valid,
+    // and the player must have enough cash.
+    if (property->house_price <= 0 || player->cash_balance < property->house_price){
+        
+        return false;
+        
+    }
+
+    // 10. Apply the even-building rule.
+    int minimumLevel = getLowestGroupDevelopmentLevel(gameboard, property->group);
+
+    if (property->houses_count != minimumLevel){
+        return false;
+    }
+
+    // 11. Every condition passed.
+    return true;
+
+}
+
+bool buildHouse(Player *player, Square gameboard[], int propertyIndex){
+    
+    if(!canBuildHouse(player, gameboard, propertyIndex)){
+        
+        printf("%s cannot build a house on %s.\n", getPlayerName(player->ID), gameboard[propertyIndex].name);
+        
+        return false;
+        
+    }
+    
+    Property *property = &gameboard[propertyIndex].Data.property;
+    
+    player->cash_balance -= property->house_price;
+    
+    property->houses_count++;
+    
+    printf("%s built a house on %s.\n", getPlayerName(player->ID), gameboard[propertyIndex].name);
+    
+    return true;
+
+}
+
+bool canBuildHotel(Player *player, Square gameboard[], int propertyIndex){
+
+    if(gameboard[propertyIndex].Types != Square_Property){
+        return false;
+
+    }if(!hasMonopoly(player, gameboard, gameboard[propertyIndex].Data.property.group)){
+        return false;
+    }
+    if(!isColourGroupBuildable(player, gameboard, gameboard[propertyIndex].Data.property.group)){
+        return false;
+    }
+    if(gameboard[propertyIndex].Data.property.houses_count !=4){
+        return false;
+    }
+    if(gameboard[propertyIndex].Data.property.hasHotel){
+        return false;
+    }
+    if(getLowestGroupDevelopmentLevel(gameboard, gameboard[propertyIndex].Data.property.group) != 4){
+        return false;
+    }
+    if(player->cash_balance < gameboard[propertyIndex].Data.property.hotel_price){
+        return false;
+    }
+
+    return true;
+
+}
+
+bool buildHotel(Player *player, Square gameboard[], int propertyIndex){
+
+    if(!canBuildHotel(player, gameboard, propertyIndex)){
+
+        printf("%s cannot build a hotel on %s.\n", getPlayerName(player->ID), gameboard[propertyIndex].name);
+
+        return false;
+
+    }
+
+    Property *property = &gameboard[propertyIndex].Data.property;
+
+    //networth
+
+    player->cash_balance -= property->hotel_price;
+
+    property->hasHotel = true;
+    property->houses_count = 0;
+
+    printf("%s built a hotel on %s.\n", getPlayerName(player->ID), gameboard[propertyIndex].name);
+
+    return true;
+
+}
+
+bool buildNextDevolopment(Player *player, Square gameboard[], SquareTypes types){
+
+    int lowest_level = getLowestGroupDevelopmentLevel(gameboard, types);
+
+    if(lowest_level < 4){
+        buildHouse(player, gameboard, types);
+
+    }if(lowest_level = 4){
+        buildHotel(player, gameboard, types);
+
+    }if(lowest_level = 5){
+        printf("No more devolopments can be built on this property\n");
+        return false;
+    }
+    return true;
+}
+
 void startgame(){
 
     GameState gameState = {0};
