@@ -182,6 +182,34 @@ typedef enum{
 
 } LoanStatus;
 
+typedef enum{
+
+    PAYMENT_SUCCESS,
+    PLAYER_BANKRUPT,
+    PAYMENT_INVALID
+
+} PaymentResult;
+
+/*
+ * These two were defined inside game.c. They live here now
+ * because game.h declares functions that use them, and a
+ * header cannot see a type declared in a .c file.
+ */
+typedef struct{
+
+    int dice1;
+    int dice2;
+    int sum_of_dice;
+
+} DiceOperations;
+
+typedef struct{
+
+    int playerID;
+    int diceTotal;
+
+} TurnResult;
+
 typedef struct{
 
     PropertyGroup group;
@@ -219,6 +247,9 @@ typedef struct{
     int mortgage_value;
     int current_market_value;
 
+    int base_rent;
+    int current_market_rent;
+
     OwnerID ownerID;
 
     int isMortgaged;
@@ -233,7 +264,7 @@ typedef struct{
     int current_market_value;
 
     OwnerID ownerID;
-
+    int own_count;
     bool isMortgaged;
     bool isLoanLocked;
 
@@ -315,7 +346,7 @@ typedef struct{
     short railwayOwned;
     short UtilitiesOwned;
     short totalPropertiesOwned;
-
+    
     bool ownedAssets[40];
 
     //player loans and stuff    
@@ -336,6 +367,17 @@ typedef enum{
     RENT_EFFECT,
 
 } EffectType;
+
+typedef enum{
+ 
+    BANK_NONE,
+    BANK_TAKE_LOAN,
+    BANK_REPAY_PART,
+    BANK_REPAY_FULL,
+    BANK_EXTEND,
+    BANK_INCREASE
+ 
+} BankAction;
 
 
 #endif

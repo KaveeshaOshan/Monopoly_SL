@@ -69,6 +69,8 @@ void initialize_board(Square gameboard[40]) {
     gameboard[5].Data.railway.purchase_price = 1500;
     gameboard[5].Data.railway.mortgage_value = 750;
     gameboard[5].Data.railway.current_market_value = 1500;
+    gameboard[5].Data.railway.base_rent = 250;
+    gameboard[5].Data.railway.current_market_rent = 250;
     gameboard[5].Data.railway.ownerID = OWNER_BANK;
     gameboard[5].Data.railway.isMortgaged = false;
     gameboard[5].Data.railway.isLoanLocked = false;
@@ -100,6 +102,8 @@ void initialize_board(Square gameboard[40]) {
     gameboard[15].Data.railway.purchase_price = 1500;
     gameboard[15].Data.railway.mortgage_value = 750;
     gameboard[15].Data.railway.current_market_value = 1500;
+    gameboard[15].Data.railway.base_rent = 250;
+    gameboard[15].Data.railway.current_market_rent = 250;
     gameboard[15].Data.railway.ownerID = OWNER_BANK;
     gameboard[15].Data.railway.isMortgaged = false;
     gameboard[15].Data.railway.isLoanLocked = false;
@@ -121,6 +125,8 @@ void initialize_board(Square gameboard[40]) {
     gameboard[25].Data.railway.purchase_price = 1500;
     gameboard[25].Data.railway.mortgage_value = 750;
     gameboard[25].Data.railway.current_market_value = 1500;
+    gameboard[25].Data.railway.base_rent = 250;
+    gameboard[25].Data.railway.current_market_rent = 250;
     gameboard[25].Data.railway.ownerID = OWNER_BANK;
     gameboard[25].Data.railway.isMortgaged = false;
     gameboard[25].Data.railway.isLoanLocked = false;
@@ -151,6 +157,8 @@ void initialize_board(Square gameboard[40]) {
     gameboard[35].Data.railway.purchase_price = 1500;
     gameboard[35].Data.railway.mortgage_value = 750;
     gameboard[35].Data.railway.current_market_value = 1500;
+    gameboard[35].Data.railway.base_rent = 250;
+    gameboard[35].Data.railway.current_market_rent = 250;
     gameboard[35].Data.railway.ownerID = OWNER_BANK;
     gameboard[35].Data.railway.isMortgaged = false;
     gameboard[35].Data.railway.isLoanLocked = false;
